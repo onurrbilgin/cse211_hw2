@@ -18,8 +18,8 @@ const vector <vector <string>> fileInput(const string &file_name){
     vector <string> A, B, C, D;
     vector <vector <string>> sets;
 
-    C.push_back("");    // tbi: whether we need more than one set or not; come back to it later
-    D.push_back("");
+    //  C.push_back("");    // tbi: whether we need more than one set or not; come back to it later
+    //  D.push_back("");
 
     fileIn.open(file_name);
     
@@ -87,8 +87,6 @@ const vector <vector <string>> fileInput(const string &file_name){
     }
 
     sets.push_back(A);  sets.push_back(B);  sets.push_back(C);  sets.push_back(D);
-    cout << "end of inputFile function" << endl;
-
     return sets;
 }
 
@@ -96,15 +94,15 @@ void functionType(const vector<string> &A, const vector<string> &B){
 
     if(A.size() > B.size()){    // check for if function
 
-        cout << "Problem 1: not a function" << endl;
+        cout << "not a function" << endl;
         return;
     }else if(A.size() == B.size()){ // check for bijective
 
-        cout << "Problem 1: bijective" << endl;
+        cout << "bijective" << endl;
         return;
     }else if(A.size() < B.size()){  // check for onto
 
-        cout << "Problem 1: one-to-one but not onto" << endl;
+        cout << "one-to-one but not onto" << endl;
         return;
     }
 
@@ -128,8 +126,11 @@ int main(int argc, char *argv[]){
     vector <vector <string>> sets;
     sets = fileInput(argv[1]);
 
-    functionType(sets.at(0), sets.at(1));
-
+    cout << "Problem 1: ";
+    functionType(sets.at(0), sets.at(1));   // call for Problem 1
+    cout << "Problem 2: ";
+    functionType(sets.at(1), sets.at(0));   // call for Problem 2
+    
 
 
     return 0;
