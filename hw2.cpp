@@ -3,11 +3,24 @@
 #include <vector>
 #include <fstream>
 
+// TODO: check whether its just two sets if not take all sets
+// TODO: deger kumesi eleman sayisi tanimdan fazlaysa ortenlik biter direkt
+// deger kumesi sayisi tanima esitse kesinlikle ortendir; degerdeki bazi elemanlar ayni ise bile
+// deger kumesi eleman sayisi tanimdan az ise kesinlikle fonksiyon degildir
+
 using namespace std;
 
 const vector <vector <string>> fileInput(const string &file_name);
-void functionType(const vector<string> &A, const vector<string> &B);
+// void functionType(const vector<string> &A, const vector<string> &B);
 bool checkDuplicate(const vector<string> &set, const string &element);
+
+// tbi
+bool isFunction(const vector<string> &A, const vector<string> &B);
+bool checkOnto(const vector<string> &A, const vector<string> &B);
+bool checkOneToOne(const vector<string> &A, const vector<string> &B);
+bool checkBijection(bool onto, bool oneToOne);
+
+
 
 const vector <vector <string>> fileInput(const string &file_name){
 
@@ -20,6 +33,8 @@ const vector <vector <string>> fileInput(const string &file_name){
 
     //  C.push_back("");    // tbi: whether we need more than one set or not; come back to it later
     //  D.push_back("");
+
+
 
     fileIn.open(file_name);
     
@@ -90,35 +105,55 @@ const vector <vector <string>> fileInput(const string &file_name){
     return sets;
 }
 
-void functionType(const vector<string> &A, const vector<string> &B){
-
-    if(A.size() > B.size()){    // check for if function
-
-        cout << "not a function" << endl;
-        return;
-    }else if(A.size() == B.size()){ // check for bijective
-
-        cout << "bijective" << endl;
-        return;
-    }else if(A.size() < B.size()){  // check for onto
-
-        cout << "one-to-one but not onto" << endl;
-        return;
-    }
-
-    // we don't have to check for the conditions like "onto but not one-to-one" and 
-    // "neither onto nor one-to-one" since we match set elements in the same row
-}
-
 bool checkDuplicate(const vector<string> &set, const string &element){
 
     for(int i = 0; i < set.size(); ++i){
 
         if(set.at(i) == element)
-            return 0;
+            return false;
     }
 
-    return 1;
+    return true;
+}
+
+void functionType(const vector<string> &A, const vector<string> &B){
+
+    if(isFunction(A, B)){
+
+        if(checkOnto(A, B) && checkOneToOne(A, B))
+            cout << "bijection";
+        else if(!checkOnto(A, B) && checkOneToOne(A, B))
+            cout << "one-to-one but not onto";
+        else if(checkOnto(A, B) && !checkOneToOne(A, B))
+            cout << "onto but not one-to-one";
+        else if(!checkOnto(A, B) && !checkOneToOne(A, B))
+            cout << "neither onto nor one-to-one";
+        
+    }else
+        cout << "not a function";
+
+}
+
+bool isFunction(const vector<string> &A, const vector<string> &B){
+
+    if(A.size() > B.size())
+        return false;
+}
+
+bool checkOnto(const vector<string> &A, const vector<string> &B){
+
+    if(A.size() <= B.size())
+        return false;
+}
+
+bool checkOneToOne(const vector<string> &A, const vector<string> &B){
+
+
+}
+
+bool checkBijection(bool onto, bool oneToOne){
+
+
 }
 
 int main(int argc, char *argv[]){
