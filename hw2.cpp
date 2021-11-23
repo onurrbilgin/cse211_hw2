@@ -3,28 +3,19 @@
 #include <vector>
 #include <fstream>
 
-// TODO: check whether its just two sets if not take all sets
-// TODO: deger kumesi eleman sayisi tanimdan fazlaysa ortenlik biter direkt
-// deger kumesi sayisi tanima esitse kesinlikle ortendir; degerdeki bazi elemanlar ayni ise bile
-// deger kumesi eleman sayisi tanimdan az ise kesinlikle fonksiyon degildir
+// TODO: check whether its just two sets if not take all sets -> fileInput()
 
 using namespace std;
 
-const vector <vector <string>> fileInput(const string &file_name);
-// void functionType(const vector<string> &A, const vector<string> &B);
-bool checkDuplicate(const vector<string> &set, const string &element);
+const vector <vector <string>> fileInput(const string &file_name);      // tbc
+void functionType(const vector<string> &A, const vector<string> &B);    // tbc
+void printTwoSets(const vector<string> &A, const vector<string> &B);    // tbi: can be turned into printing as many as sets input wishes with 2d vector of string (sets) vector
 
-// tbi
-bool isFunction(const vector<string> &A, const vector<string> &B);
-bool checkOnto(const vector<string> &A, const vector<string> &B);
-bool checkOneToOne(const vector<string> &A, const vector<string> &B);
-bool checkBijection(bool onto, bool oneToOne);
-
-
+bool isFunction(const vector<string> &A, const vector<string> &B);      // done
+bool checkOnto(const vector<string> &A, const vector<string> &B);       // done
+bool checkOneToOne(const vector<string> &A, const vector<string> &B);   // done
 
 const vector <vector <string>> fileInput(const string &file_name){
-
-    int i = 0, j = 0, l = 0, m = 0;  // test
 
     string line;
     ifstream fileIn;
@@ -34,8 +25,6 @@ const vector <vector <string>> fileInput(const string &file_name){
     //  C.push_back("");    // tbi: whether we need more than one set or not; come back to it later
     //  D.push_back("");
 
-
-
     fileIn.open(file_name);
     
     getline(fileIn, line);  // skip a line to read elements of set A
@@ -44,15 +33,9 @@ const vector <vector <string>> fileInput(const string &file_name){
 
         cout << "Set A elements:" << endl;
         while(getline(fileIn, line)){
-
             if(line == "B")
-                break;
-
-            if(checkDuplicate(A, line)){
-                A.push_back(line);
-                cout << A.at(i) << endl;
-                i++;
-            }
+                break;    
+            A.push_back(line);
         }
     }
     
@@ -60,15 +43,9 @@ const vector <vector <string>> fileInput(const string &file_name){
 
         cout << "Set B elements:" << endl;
         while(getline(fileIn, line)){
-
             if(line == "C")
-                break;
-
-            if(checkDuplicate(B, line)){
-                B.push_back(line);
-                cout << B.at(j) << endl;
-                j++;
-            }
+                break;        
+            B.push_back(line);
         }
     }
     
@@ -76,47 +53,24 @@ const vector <vector <string>> fileInput(const string &file_name){
 
         cout << "Set C elements:" << endl;
         while(getline(fileIn, line)){
-
             if(line == "D")
                 break;
-
-            if(checkDuplicate(C, line)){
-                C.push_back(line);
-                cout << C.at(l) << endl;
-                l++;
-            }
+            C.push_back(line);
         }
     }
     
     if(line == "D"){
 
         cout << "Set D elements:" << endl;
-        while(getline(fileIn, line)){
-
-            if(checkDuplicate(D, line)){
-                D.push_back(line);
-                cout << D.at(m) << endl;
-                m++;
-            }
-        }
-    }
+        while(getline(fileIn, line))
+            D.push_back(line);
+     }
 
     sets.push_back(A);  sets.push_back(B);  sets.push_back(C);  sets.push_back(D);
     return sets;
 }
 
-bool checkDuplicate(const vector<string> &set, const string &element){
-
-    for(int i = 0; i < set.size(); ++i){
-
-        if(set.at(i) == element)
-            return false;
-    }
-
-    return true;
-}
-
-void functionType(const vector<string> &A, const vector<string> &B){
+void functionType(const vector<string> &A, const vector<string> &B){    // done
 
     if(isFunction(A, B)){
 
@@ -132,42 +86,66 @@ void functionType(const vector<string> &A, const vector<string> &B){
     }else
         cout << "not a function";
 
+    return;
 }
 
-bool isFunction(const vector<string> &A, const vector<string> &B){
+bool isFunction(const vector<string> &A, const vector<string> &B){      // done
 
     if(A.size() > B.size())
         return false;
+    else{
+        for(int i = 0; i < A.size(); ++i){
+            for(int j = i + 1; j < A.size(); j++){
+                if(A.at(i) == A.at(j))
+                    return false;
+            }
+        }
+    }
+
+    return true;
 }
 
-bool checkOnto(const vector<string> &A, const vector<string> &B){
+bool checkOnto(const vector<string> &A, const vector<string> &B){       // done
 
     if(A.size() <= B.size())
         return false;
+    return true;
 }
 
-bool checkOneToOne(const vector<string> &A, const vector<string> &B){
+bool checkOneToOne(const vector<string> &A, const vector<string> &B){   // done
 
+    for(int i = 0; i < A.size(); ++i){
+            for(int j = i + 1; j < A.size(); j++){
+                if(B.at(i) == B.at(j))
+                    return false;
+            }
+        }
 
+    return true;
 }
 
-bool checkBijection(bool onto, bool oneToOne){
+void printTwoSets(const vector<string> &A, const vector<string> &B){
 
-
+    cout << A.at(0);
+    for(int i = 0; i < A.size(); ++i){
+        for(int j = i + 1; j < A.size(); ++j){  // bakacaz ve test edecez
+            if(A.at(i) != A.at(j))
+                cout << A.at(j) << endl;
+        }
+    }
 }
 
 int main(int argc, char *argv[]){
 
     vector <vector <string>> sets;
     sets = fileInput(argv[1]);
+    printTwoSets(sets.at(0), sets.at(1));
 
     cout << "Problem 1: ";
     functionType(sets.at(0), sets.at(1));   // call for Problem 1
     cout << "Problem 2: ";
     functionType(sets.at(1), sets.at(0));   // call for Problem 2
     
-
-
     return 0;
 }
 
