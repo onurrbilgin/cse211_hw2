@@ -10,7 +10,7 @@ using namespace std;
 const vector <vector <string>> fileInput(const string &file_name);      // tbc
 void functionType(const vector<string> &A, const vector<string> &B);    // tbc
 void printTwoSets(const vector<string> &A, const vector<string> &B);    // tbi: can be turned into printing as many as sets input wishes with 2d vector of string (sets) vector
-
+void checkDuplicate(const vector<string> &set, const string &element);  // tbi
 bool isFunction(const vector<string> &A, const vector<string> &B);      // done
 bool checkOnto(const vector<string> &A, const vector<string> &B);       // done
 bool checkOneToOne(const vector<string> &A, const vector<string> &B);   // done
@@ -30,8 +30,6 @@ const vector <vector <string>> fileInput(const string &file_name){
     getline(fileIn, line);  // skip a line to read elements of set A
 
     if(line == "A"){
-
-        cout << "Set A elements:" << endl;
         while(getline(fileIn, line)){
             if(line == "B")
                 break;    
@@ -40,8 +38,6 @@ const vector <vector <string>> fileInput(const string &file_name){
     }
     
     if(line == "B"){
-
-        cout << "Set B elements:" << endl;
         while(getline(fileIn, line)){
             if(line == "C")
                 break;        
@@ -75,16 +71,16 @@ void functionType(const vector<string> &A, const vector<string> &B){    // done
     if(isFunction(A, B)){
 
         if(checkOnto(A, B) && checkOneToOne(A, B))
-            cout << "bijection";
+            cout << "bijection" << endl;
         else if(!checkOnto(A, B) && checkOneToOne(A, B))
-            cout << "one-to-one but not onto";
+            cout << "one-to-one but not onto" << endl;
         else if(checkOnto(A, B) && !checkOneToOne(A, B))
-            cout << "onto but not one-to-one";
+            cout << "onto but not one-to-one" << endl;
         else if(!checkOnto(A, B) && !checkOneToOne(A, B))
-            cout << "neither onto nor one-to-one";
+            cout << "neither onto nor one-to-one" << endl;
         
     }else
-        cout << "not a function";
+        cout << "not a function" << endl;
 
     return;
 }
@@ -107,7 +103,7 @@ bool isFunction(const vector<string> &A, const vector<string> &B){      // done
 
 bool checkOnto(const vector<string> &A, const vector<string> &B){       // done
 
-    if(A.size() <= B.size())
+    if(A.size() < B.size())
         return false;
     return true;
 }
@@ -120,19 +116,39 @@ bool checkOneToOne(const vector<string> &A, const vector<string> &B){   // done
                     return false;
             }
         }
-
+        
     return true;
+}
+
+void checkDuplicate(vector<string> &set, const string &element){
+
+    for(int i = 0; i < set.size(); ++i){
+
+        if(set.at(i) == element)
+            return;            
+    }
+
+    set.push_back(element);
+    return;
 }
 
 void printTwoSets(const vector<string> &A, const vector<string> &B){
 
-    cout << A.at(0);
-    for(int i = 0; i < A.size(); ++i){
-        for(int j = i + 1; j < A.size(); ++j){  // bakacaz ve test edecez
-            if(A.at(i) != A.at(j))
-                cout << A.at(j) << endl;
-        }
-    }
+    vector <string> temp;
+    cout << "Set A elements:" << endl;
+    for(int i = 0; i < A.size(); ++i)
+        checkDuplicate(temp, A.at(i));
+    for(int i = 0; i < temp.size(); ++i)
+        cout << temp.at(i) << endl;
+    temp.clear();
+
+    cout << "Set B elements:" << endl;
+    for(int i = 0; i < B.size(); ++i)
+        checkDuplicate(temp, B.at(i));
+    for(int i = 0; i < temp.size(); ++i)
+        cout << temp.at(i) << endl;
+
+    return;
 }
 
 int main(int argc, char *argv[]){
