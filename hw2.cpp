@@ -4,13 +4,14 @@
 #include <fstream>
 
 // TODO: check whether its just two sets if not take all sets -> fileInput()
+// TODO: redesign fileInput() to read A,B,C... sets as the ascii char number goes up
 
 using namespace std;
 
 const vector <vector <string>> fileInput(const string &file_name);      // tbc
 void functionType(const vector<string> &A, const vector<string> &B);    // tbc
 void printTwoSets(const vector<string> &A, const vector<string> &B);    // tbi: can be turned into printing as many as sets input wishes with 2d vector of string (sets) vector
-void checkDuplicate(const vector<string> &set, const string &element);  // tbi
+void checkDuplicate(const vector<string> &set, const string &element);  // done
 bool isFunction(const vector<string> &A, const vector<string> &B);      // done
 bool checkOnto(const vector<string> &A, const vector<string> &B);       // done
 bool checkOneToOne(const vector<string> &A, const vector<string> &B);   // done
@@ -116,7 +117,7 @@ bool checkOneToOne(const vector<string> &A, const vector<string> &B){   // done
                     return false;
             }
         }
-        
+
     return true;
 }
 

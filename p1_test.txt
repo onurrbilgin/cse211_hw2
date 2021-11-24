@@ -1,0 +1,8 @@
+A
+apple
+yellow
+4
+B
+orange
+orange
+2
