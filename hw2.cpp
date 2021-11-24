@@ -30,13 +30,41 @@ const vector <vector <string>> fileInput(const string &file_name){
     
     cout << "file opened" << endl;
 
-    getline(fileIn, line);  // skip a line to read elements of set A
-    getline(fileIn, line);  // first element of set A
+    // LEFT HERE: change getline calls to stream insertion operator overloads
+
+    fileIn >> line;
+    cout << line << " ";
+    cout << line.length() << endl;
+    fileIn >> line;
+    cout << line << " ";
+    cout << line.length() << endl;
+    fileIn >> line;
+    cout << line << " ";
+    cout << line.length() << endl;
+    fileIn >> line;
+    cout << line << " ";
+    cout << line.length() << endl;
+    fileIn >> line;
+    cout << line << " ";
+    cout << line.length() << endl;
+
+
+    /*getline(fileIn, line);  // skip a line to read elements of set A
+    cout << line << endl;
+    cout << line.length();
+
+
     
-    do{
-        A.push_back(line);
+    if(line == "A"){
+        
         getline(fileIn, line);
-    }while(line != "B" && line != "");
+        while(line != "B" && line != ""){
+            
+            A.push_back(line);
+            getline(fileIn, line);
+        }
+        
+    }
     
     if(line == "B"){
         while(getline(fileIn, line)){
@@ -61,9 +89,17 @@ const vector <vector <string>> fileInput(const string &file_name){
         cout << "Set D elements:" << endl;
         while(getline(fileIn, line))
             D.push_back(line);
-     }
+     }*/
 
-    sets.push_back(A);  sets.push_back(B);  sets.push_back(C);  sets.push_back(D);
+    if(!A.empty())
+        sets.push_back(A);
+    if(!B.empty())
+        sets.push_back(B);
+    if(!C.empty())
+        sets.push_back(C);
+    if(!D.empty())
+        sets.push_back(D);
+
     fileIn.close();
     return sets;
 }
@@ -157,12 +193,30 @@ int main(int argc, char *argv[]){
 
     vector <vector <string>> sets;
     sets = fileInput(argv[1]);
-    printTwoSets(sets.at(0), sets.at(1));
 
-    cout << "Problem 1: ";
-    functionType(sets.at(0), sets.at(1));   // call for Problem 1
-    cout << "Problem 2: ";
-    functionType(sets.at(1), sets.at(0));   // call for Problem 2
+    cout << sets.size() << endl;
+
+    if(sets.size() == 2){
+
+        cout << "run 1 & 2nd problems" << endl; // run 1 & 2nd problems
+        printTwoSets(sets.at(0), sets.at(1));
+        cout << "Problem 1: ";
+        functionType(sets.at(0), sets.at(1));   // call for Problem 1
+        cout << "Problem 2: ";
+        functionType(sets.at(1), sets.at(0));   // call for Problem 2
+
+    }else if(sets.size() > 2){
+
+        cout << "run 3rd problem" << endl;      // run 3rd problem
+        for(int i = 0; i < sets.size(); ++i){
+            
+            if(!isFunction(sets.at(i), sets.at(i + 1)))
+                cout << "Problem 3: not a function" << endl;
+            break;
+        }
+
+        functionType(sets.at(sets.size() - 1), sets.at(sets.size()));
+    }
     
     return 0;
 }

@@ -8,9 +8,3 @@ london
 sardunia
 ottawa
 berlin
-C
-lulu
-lolo
-lili
-pipi
-hehe
