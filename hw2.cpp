@@ -28,20 +28,20 @@ const vector <vector <string>> fileInput(const string &file_name){
 
     fileIn.open(file_name);
     
-    getline(fileIn, line);  // skip a line to read elements of set A
+    cout << "file opened" << endl;
 
-    if(line == "A"){
-        while(getline(fileIn, line)){
-            if(line == "B")
-                break;    
-            A.push_back(line);
-        }
-    }
+    getline(fileIn, line);  // skip a line to read elements of set A
+    getline(fileIn, line);  // first element of set A
+    
+    do{
+        A.push_back(line);
+        getline(fileIn, line);
+    }while(line != "B" && line != "");
     
     if(line == "B"){
         while(getline(fileIn, line)){
             if(line == "C")
-                break;        
+                break;
             B.push_back(line);
         }
     }
@@ -64,6 +64,7 @@ const vector <vector <string>> fileInput(const string &file_name){
      }
 
     sets.push_back(A);  sets.push_back(B);  sets.push_back(C);  sets.push_back(D);
+    fileIn.close();
     return sets;
 }
 
