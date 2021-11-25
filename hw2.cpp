@@ -17,56 +17,88 @@ bool checkOnto(const vector<string> &A, const vector<string> &B);       // done
 bool checkOneToOne(const vector<string> &A, const vector<string> &B);   // done
 
 const vector <vector <string>> fileInput(const string &file_name){
-
+  
     string line;
     ifstream fileIn;
     vector <string> A, B, C, D;
     vector <vector <string>> sets;
 
-    //  C.push_back("");    // tbi: whether we need more than one set or not; come back to it later
-    //  D.push_back("");
-
     fileIn.open(file_name);
     
     cout << "file opened" << endl;
 
-    // LEFT HERE: change getline calls to stream insertion operator overloads
-
     fileIn >> line;
-    cout << line << " ";
-    cout << line.length() << endl;
-    fileIn >> line;
-    cout << line << " ";
-    cout << line.length() << endl;
-    fileIn >> line;
-    cout << line << " ";
-    cout << line.length() << endl;
-    fileIn >> line;
-    cout << line << " ";
-    cout << line.length() << endl;
-    fileIn >> line;
-    cout << line << " ";
-    cout << line.length() << endl;
-
-
-    /*getline(fileIn, line);  // skip a line to read elements of set A
     cout << line << endl;
     cout << line.length();
 
+    string setCheck;
+    int setNameOrder = 65;      // starting with set A which is 65 in ascii
+    char setNames = setNameOrder;
 
-    
-    if(line == "A"){
+    setCheck.assign(1, setNames);
+
+    if(line == setCheck){
         
-        getline(fileIn, line);
-        while(line != "B" && line != ""){
-            
+        setCheck.assign(1, ++setNames);
+        while(fileIn >> line){
+
+            cout << line;
+            cout << line.length() << endl;
+
+            if(line == setCheck)
+                break;
             A.push_back(line);
-            getline(fileIn, line);
         }
-        
     }
+
+    if(line == setCheck){
+        
+        setCheck.assign(1, ++setNames);
+        while(fileIn >> line){
+
+            cout << line;
+            cout << line.length() << endl;
+
+            if(line == setCheck)
+                break;
+            B.push_back(line);
+        }
+    }
+
+    /* FROM HERE if(line == "B"){
+        
+        while(fileIn >> line){
+
+            cout << line;
+            cout << line.length() << endl;
+
+            if(line == "C" || fileIn.eof())
+                break;
+            B.push_back(line);
+        }
+    }
+
+    if(line == "C"){
+        
+        fileIn >> line;
+        while(line != "D" && line != ""){
+
+            C.push_back(line);
+            fileIn >> line;
+        }
+    }  EN SON COMMENTE ALINAN*/
+
+    /*if(line == "D"){
+        
+        fileIn >> line;
+        while(line != ""){
+
+            D.push_back(line);
+            fileIn >> line;
+        }
+    }*/
     
-    if(line == "B"){
+    /*if(line == "B"){
         while(getline(fileIn, line)){
             if(line == "C")
                 break;
