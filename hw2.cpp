@@ -2,15 +2,14 @@
 #include <string>
 #include <vector>
 #include <fstream>
-
-// TODO: check whether its just two sets if not take all sets -> fileInput()
-// TODO: redesign fileInput() to read A,B,C... sets as the ascii char number goes up
+#include <cstdlib>
 
 using namespace std;
 
 const vector <vector <string>> fileInput(const string &file_name);      // tbc
 void functionType(const vector<string> &A, const vector<string> &B);    // tbc
-void printTwoSets(const vector<string> &A, const vector<string> &B);    // tbi: can be turned into printing as many as sets input wishes with 2d vector of string (sets) vector
+void printTwoSets(const vector<string> &A, const vector<string> &B);    // done
+void printSets(const vector<vector <string>> &sets);
 void checkDuplicate(const vector<string> &set, const string &element);  // done
 bool isFunction(const vector<string> &A, const vector<string> &B);      // done
 bool checkOnto(const vector<string> &A, const vector<string> &B);       // done
@@ -20,117 +19,21 @@ const vector <vector <string>> fileInput(const string &file_name){
   
     string line;
     ifstream fileIn;
-    vector <string> A, B, C, D;
+    vector <string> set;
     vector <vector <string>> sets;
 
     fileIn.open(file_name);
-    
-    cout << "file opened" << endl;
+    fileIn >> line; // start reading elements of set A
 
-    fileIn >> line;
-    cout << line << endl;
-    cout << line.length();
-
-    string setCheck;
-    int setNameOrder = 65;      // starting with set A which is 65 in ascii
-    char setNames = setNameOrder;
-
-    setCheck.assign(1, setNames);
-
-    if(line == setCheck){
-        
-        setCheck.assign(1, ++setNames);
-        while(fileIn >> line){
-
-            cout << line;
-            cout << line.length() << endl;
-
-            if(line == setCheck)
-                break;
-            A.push_back(line);
-        }
+    while(fileIn >> line){
+        if((line.size() == 1) && (line.at(0) >= 'A') && (line.at(0) <= 'Z') || (fileIn.eof())){
+            if(fileIn.eof())
+                set.push_back(line);
+            sets.push_back(set);
+            set.clear();
+        }else
+            set.push_back(line);
     }
-
-    if(line == setCheck){
-        
-        setCheck.assign(1, ++setNames);
-        while(fileIn >> line){
-
-            cout << line;
-            cout << line.length() << endl;
-
-            if(line == setCheck)
-                break;
-            B.push_back(line);
-        }
-    }
-
-    /* FROM HERE if(line == "B"){
-        
-        while(fileIn >> line){
-
-            cout << line;
-            cout << line.length() << endl;
-
-            if(line == "C" || fileIn.eof())
-                break;
-            B.push_back(line);
-        }
-    }
-
-    if(line == "C"){
-        
-        fileIn >> line;
-        while(line != "D" && line != ""){
-
-            C.push_back(line);
-            fileIn >> line;
-        }
-    }  EN SON COMMENTE ALINAN*/
-
-    /*if(line == "D"){
-        
-        fileIn >> line;
-        while(line != ""){
-
-            D.push_back(line);
-            fileIn >> line;
-        }
-    }*/
-    
-    /*if(line == "B"){
-        while(getline(fileIn, line)){
-            if(line == "C")
-                break;
-            B.push_back(line);
-        }
-    }
-    
-    if(line == "C"){
-
-        cout << "Set C elements:" << endl;
-        while(getline(fileIn, line)){
-            if(line == "D")
-                break;
-            C.push_back(line);
-        }
-    }
-    
-    if(line == "D"){
-
-        cout << "Set D elements:" << endl;
-        while(getline(fileIn, line))
-            D.push_back(line);
-     }*/
-
-    if(!A.empty())
-        sets.push_back(A);
-    if(!B.empty())
-        sets.push_back(B);
-    if(!C.empty())
-        sets.push_back(C);
-    if(!D.empty())
-        sets.push_back(D);
 
     fileIn.close();
     return sets;
@@ -205,18 +108,35 @@ void checkDuplicate(vector<string> &set, const string &element){
 void printTwoSets(const vector<string> &A, const vector<string> &B){
 
     vector <string> temp;
-    cout << "Set A elements:" << endl;
+    cout << "Set elements:" << endl;
     for(int i = 0; i < A.size(); ++i)
         checkDuplicate(temp, A.at(i));
     for(int i = 0; i < temp.size(); ++i)
         cout << temp.at(i) << endl;
     temp.clear();
 
-    cout << "Set B elements:" << endl;
+    cout << "Set elements:" << endl;
     for(int i = 0; i < B.size(); ++i)
         checkDuplicate(temp, B.at(i));
     for(int i = 0; i < temp.size(); ++i)
         cout << temp.at(i) << endl;
+
+    return;
+}
+
+void printSets(const vector<vector <string>> &sets){
+
+    vector <string> temp;
+    cout << "Elements of sets in order by the file below" << endl << endl;
+    for(int i = 0; i < sets.size(); ++i){
+
+        cout << i + 1 << ". set elements:" << endl;
+        for(int j = 0; j < sets.at(i).size(); ++j)
+            checkDuplicate(temp, sets.at(i).at(j));
+        for(int k = 0; k < temp.size(); ++k)
+            cout << temp.at(k) << endl;
+        temp.clear();
+    }
 
     return;
 }
@@ -226,28 +146,34 @@ int main(int argc, char *argv[]){
     vector <vector <string>> sets;
     sets = fileInput(argv[1]);
 
-    cout << sets.size() << endl;
+    //  cout <<  endl << " sets.size() = " << sets.size() << endl << endl;
 
     if(sets.size() == 2){
 
-        cout << "run 1 & 2nd problems" << endl; // run 1 & 2nd problems
-        printTwoSets(sets.at(0), sets.at(1));
+        printSets(sets);
+
         cout << "Problem 1: ";
         functionType(sets.at(0), sets.at(1));   // call for Problem 1
+        
         cout << "Problem 2: ";
-        functionType(sets.at(1), sets.at(0));   // call for Problem 2
+        if(isFunction(sets.at(0), sets.at(1)) && checkOnto(sets.at(0), sets.at(1)) && checkOneToOne(sets.at(0), sets.at(1)))    // check if A->B is a bijection function
+            functionType(sets.at(1), sets.at(0));   // call for Problem 2
+        else
+            cout << "inverse doesn't exist" << endl;
 
     }else if(sets.size() > 2){
 
         cout << "run 3rd problem" << endl;      // run 3rd problem
-        for(int i = 0; i < sets.size(); ++i){
-            
-            if(!isFunction(sets.at(i), sets.at(i + 1)))
+        printSets(sets);
+        for(int i = 0; i < sets.size() - 1; i = i + 2){
+            if(!isFunction(sets.at(i), sets.at(i + 1))){
                 cout << "Problem 3: not a function" << endl;
-            break;
+                exit(1);
+            }
         }
 
-        functionType(sets.at(sets.size() - 1), sets.at(sets.size()));
+        cout << "Problem 3: ";
+        functionType(sets.at(sets.size() - 2), sets.at(sets.size() - 1));
     }
     
     return 0;
